@@ -23,8 +23,9 @@ var SampleApp = function() {
     self.setupVariables = function() {
         console.log('Inside setupVariables');
         //  Set the environment variables we need.
-        self.ipaddress = +process.env.OPENSHIFT_NODEJS_PORT || 7001;
-        self.port = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
+        
+        self.ipaddress = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
+        self.port = +process.env.OPENSHIFT_NODEJS_PORT || 7001;
         
         //self.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
         //self.port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
