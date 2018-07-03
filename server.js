@@ -21,9 +21,13 @@ var SampleApp = function() {
      *  Set up server IP address and port # using env variables/defaults.
      */
     self.setupVariables = function() {
+        console.log('Inside setupVariables');
         //  Set the environment variables we need.
-        self.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
-        self.port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+        self.ipaddress = +process.env.OPENSHIFT_NODEJS_PORT || 7001;
+        self.port = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
+        
+        //self.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
+        //self.port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
         if (typeof self.ipaddress === "undefined") {
             //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
@@ -38,6 +42,7 @@ var SampleApp = function() {
      *  Populate the cache.
      */
     self.populateCache = function() {
+        console.log('Inside populateCache');
         if (typeof self.zcache === "undefined") {
             self.zcache = { './app/index.html': '' };
         }
@@ -60,6 +65,7 @@ var SampleApp = function() {
      *  @param {string} sig  Signal to terminate on.
      */
     self.terminator = function(sig){
+        console.log('Inside terminator');
         if (typeof sig === "string") {
            console.log('%s: Received %s - terminating sample app ...',
                        Date(Date.now()), sig);
@@ -73,6 +79,8 @@ var SampleApp = function() {
      *  Setup termination handlers (for exit and a list of signals).
      */
     self.setupTerminationHandlers = function(){
+        
+        console.log('Inside setupTerminationHandlers');
         //  Process on exit and signals.
         process.on('exit', function() { self.terminator(); });
 
@@ -93,6 +101,7 @@ var SampleApp = function() {
      *  Create the routing table entries + handlers for the application.
      */
     self.createRoutes = function() {
+        console.log('Inside createRoutes');
         self.routes = { };
 
         self.routes['/asciimo'] = function(req, res) {
@@ -113,6 +122,8 @@ var SampleApp = function() {
      *  the handlers.
      */
     self.initializeServer = function() {
+        
+        console.log('Inside initializeServer');
         //self.createRoutes();
         self.app = express(); //express.createServer();
 
@@ -128,6 +139,8 @@ var SampleApp = function() {
      *  Initializes the sample application.
      */
     self.initialize = function() {
+        
+        console.log('Inside initialize');
         self.setupVariables();
         self.populateCache();
         self.setupTerminationHandlers();
@@ -141,8 +154,10 @@ var SampleApp = function() {
      *  Start the server (starts up the sample application).
      */
     self.start = function() {
+        console.log('Inside start');
         //  Start the app on the specific interface (and port).
         self.app.listen(self.port, self.ipaddress, function() {
+            
             console.log('%s: Node server started on %s:%d ...',
                         Date(Date.now() ), self.ipaddress, self.port);
         });
@@ -155,6 +170,6 @@ var SampleApp = function() {
 /**
  *  main():  Main code.
  */
-var zapp = new SampleApp();
-zapp.initialize();
-zapp.start();
+var explorer = new SampleApp();
+explorer.initialize();
+explorer.start();
