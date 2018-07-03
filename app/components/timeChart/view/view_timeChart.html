@@ -1,0 +1,140 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">JBoss BPM Suite Performance Benchmark Results</a>
+
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <!--<li class="active">-->
+                    <!--&lt;!&ndash;<a href="#!/bpmChart">Mean Time<span class="sr-only">(current)</span></a>&ndash;&gt;-->
+                    <!--<a ng-click="changeGraphType('time')">Mean Time</a>-->
+                <!--</li>-->
+                <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a href="#!/rateChart">Mean Rate</a>&ndash;&gt;-->
+                <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                <!--<li>-->
+                    <!--<a ng-click="changeGraphType('rate')">Mean Rate</a>-->
+                <!--</li>-->
+                <img src="assets/img/redhat_icon.png" height="40" width="40" style="margin-top: 5px;"></img>
+                <img src="assets/img/vizuri_logo.png" height="40%" width="40%" style="margin-top: 5px;"></img>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+    <!--/.container-fluid -->
+</nav>
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8 chart-holder">
+            <div class="panel panel-success chart-holder">
+                <div class="panel-heading">
+                    {{options.title}}
+                </div>
+                <div id="chartdiv"></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-success scenario-holder">
+                <div ng-show="testCase.selection === 'ext_signal'">
+                    <img src="assets/img/scenario-external-signal.png">
+                </div>
+                <div ng-show="testCase.selection === 'human_task'">
+                    <img src="assets/img/scenario-human-task.png">
+                </div>
+                <div ng-show="testCase.selection === 'start_end'">
+                    <img id="start-stop" src="assets/img/scenario-stop-start.png">
+                </div>
+                <div ng-show="testCase.selection === 'seq_flow'">
+                    <img src="assets/img/scenario-sequential.png">
+                </div>
+                <div ng-show="testCase.selection === 'par_flow'">
+                    <img src="assets/img/scenario-parallel-task.png">
+                </div>
+                <div ng-show="testCase.selection === 'rule_task'">
+                    <img src="assets/img/scenario-rules-task.png">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class ="row">
+        <center>
+            <div class="alert alert-info">
+                In order to view the results, check options from each of the categories below &#x25BC;
+            </div>
+        </center>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Graph Type</div>
+                <div class="panel-body">
+
+                    <label class="radio-inline no_indent">
+                        <input type="radio" ng-model="graphType" value="time" ng-click="changeGraphType('time')"> Time
+                    </label>
+                    <label class="radio-inline no_indent">
+                        <input type="radio" ng-model="graphType" value="rate" ng-click="changeGraphType('rate')"> Rate
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2" style="width: 20%">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Persistance</div>
+                <div class="panel-body">
+
+                        <label class="radio-inline no_indent">
+                            <input type="radio" name="persistance" class="radio" ng-change="evalutePersistanceOptions()" ng-model="persistance" value="No_Persistance">
+                            No Persistance</input>
+                        </label>
+                        <br>
+                        <label class="radio-inline no_indent">
+                            <input type="radio" name="persistance" class="radio" ng-change="evalutePersistanceOptions()" ng-model="persistance" value="Persistance">
+                            Persistance</input>
+                        </label>
+                        <br>
+                        <label class="radio-inline no_indent">
+                            <input type="radio" name="persistance" class="radio" ng-change="evalutePersistanceOptions()" ng-model="persistance" value="Persistance_W_Auditing">
+                            Persistance with Auditing</input>
+                        </label>
+                        <br>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Test Cases</div>
+                <div class="panel-body">
+
+
+                <label class="radio-inline no_indent" ng-repeat="tc in testCases">
+                    <input type="radio" class="radio" data-ng-change="evaluteGraphOptions()"
+                           ng-model="testCase.selection" ng-value="tc.value" ng-disabled="tc.disabled">{{tc.name}}
+                </label>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Server Config</div>
+                <div class="panel-body">
+            <span ng-repeat="serverConfig in serverConfigOptions">
+                <label class="checkbox-inline no_indent" for="{{serverConfig.value}}">
+                    <input type="checkbox" ng-click="evaluteGraphOptions()" class="checkbox" ng-disabled="serverConfig.disabled" ng-model="serverConfig.checked" id="{{serverConfig.value}}"/>{{serverConfig.name}}
+                </label>
+                <br>
+            </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
